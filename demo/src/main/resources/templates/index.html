@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="/jq/jquery-1.9.1.js" type="application/javascript"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta charset="UTF-8">
+<title>登录画面</title>
+</head>
+
+<style>
+
+.checkyes{
+	border-color:green;
+}
+.checkno{
+	border-color:red;
+}
+
+</style>
+
+<script>
+
+function login(){
+
+	var username = $("#userName").val();
+	var userPassword = $("#userPassword").val();
+
+	$.ajax({
+		type:"POST",
+		url:"/login",
+		data:{'userName':username,'userPassword':userPassword},
+		success: function(data){
+			$("#message").val(data);
+		}
+	})
+
+}
+
+function checkName(){
+	var username = $("#userName").val();
+	$.ajax({
+		type:"POST",
+		url:"/checkName",
+		data:{'userName':username},
+		success: function(data){
+			if(data==0){
+				$("#userName").removeClass("checkyes");
+				$("#userName").addClass("checkno");
+				if(username==""){
+					$("#userName").removeClass("checkno");
+				}
+			}else{
+				$("#userName").removeClass("checkno");
+				$("#userName").addClass("checkyes");
+			}
+		}
+	})
+}
+
+
+
+
+</script>
+
+<body>
+用户名<input id="userName" type="text" oninput="checkName()" name="userName"/>
+密    码<input id="userPassword" type="password" name="userPassword"/>
+<button onclick="login()">登录</button>
+<input id="message" type="text" disabled>
+
+</body>
+</html>
